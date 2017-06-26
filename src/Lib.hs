@@ -6,7 +6,8 @@ run :: IO ()
 run = do
   let d = square 4
   let p = cubeDebug (unit 4)
-  print p
+  let n = cubeDebug (square 4)
+  print n
 
 -- Unit
 
