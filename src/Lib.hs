@@ -2,10 +2,42 @@ module Lib
     ( run
     ) where
 
+import Data.Char (toUpper, toLower, isUpper)
+
 run :: IO ()
 run = do
-  let p = bind square (bind cube (unit 4))
+  -- let p = bind square (bind cube (unit 4))
+  putStrLn "Enter a String"
+  s <- getLine
+  let p = unCapitalize (toCamelCase s)
   print p
+
+-- Cammel
+
+split :: (Char -> Bool) -> String -> [String]
+split p s = case dropWhile p s of
+    "" -> []
+    s' -> w : split p s''
+          where
+            (w, s'') = break p s'
+
+replace :: Eq a => a -> a -> [a] -> [a]
+replace a b = map $ \c -> if c == a then b else c
+
+transformFst :: (Char -> Char) -> String -> String
+transformFst _ [] = []
+transformFst f (x:xs) = (f x):xs
+
+capitalize :: String -> String
+capitalize = transformFst toUpper
+
+unCapitalize :: String -> String
+unCapitalize = transformFst toLower
+
+toCamelCase :: String -> String
+toCamelCase = concat . map' . split (== ' ')
+  where
+    map' = map capitalize
 
 -- Unit
 
